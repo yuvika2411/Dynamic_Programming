@@ -2,16 +2,16 @@ import java.util.*;
 
 public class Knapsack {
     static int t[][];
-    public static void main(String args[]){
+    public static void main(String[] args){
         Scanner sc= new Scanner(System.in);
         int n=sc.nextInt();
         int c=sc.nextInt();
 
-        int[] p= new int[n];
-        int[] wt= new int[n];
+        int val[]= new int[n];
+        int wt[]= new int[n];
 
         for(int i=0;i<n;i++){
-            p[i]=sc.nextInt();
+            val[i]=sc.nextInt();
         }
 
         for(int i=0;i<n;i++){
@@ -19,24 +19,18 @@ public class Knapsack {
         }
 
         t= new int[n+1][c+1];
-        for(int i=0;i<n+1;i++){
-            Arrays.fill(t[i],-1);
-        }
-
-        int ans= knapsack(wt,p,n,c);
+        int ans= knapsack(n,c,val,wt);
         System.out.println(ans);
     }
 
-    static int knapsack(int[]wt, int[]p, int n, int c){
-        if(n==0 || c==0) return 0;
-        if(t[n][c]!=-1) return t[n][c];
+    static int knapsack(int n,int c,int val[], int wt[]){
+        if(n==0||c==0) return 0;
         if(wt[n-1]<=c){
-            return t[n][c]=Math.max(p[n-1]+knapsack(wt,p,n-1,c-wt[n-1]),knapsack(wt,p,n-1,c));
+            return t[n][c]=Math.max(val[n-1]+knapsack(n-1,c-wt[n-1],val,wt),knapsack(n-1,c,val,wt));
         }
         else if(wt[n-1]>c){
-            return t[n][c]=knapsack(wt,p,n-1,c);
+            return t[n][c]= knapsack(n-1,c,val,wt);
         }
-
-        return 0;
+        return t[n][c];
     }
 }
